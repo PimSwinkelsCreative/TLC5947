@@ -10,25 +10,20 @@
 #define CLK_PIN 18
 
 // hardware setup:
-#define N_LEDS 24
+#define N_LEDS 48
 
 // SPI Config:
 #define SPI_FREQ 1000000 // 10MHz
-
-// create the RGBW led struct
-struct RGBWLed {
-    uint16_t r;
-    uint16_t g;
-    uint16_t b;
-    uint16_t w;
-};
 
 // led data:
 RGBWLed leds[N_LEDS];
 
 // create the TLC5947 object:
 // The led array needs to be initialized prior to this object creation
-TLC5947 ledDriver((uint16_t*)leds, N_LEDS*(sizeof(leds[0])/sizeof(leds[0].r)), DATA_PIN, CLK_PIN, LATCH_PIN);
+TLC5947 ledDriver(leds, N_LEDS, DATA_PIN, CLK_PIN, LATCH_PIN);
+
+// TLC5947 ledDriver((uint16_t*)leds, N_LEDS*sizeof(leds[0])/sizeof(leds[0].r), DATA_PIN, CLK_PIN, LATCH_PIN);
+
 
 uint32_t loopCounter = 0;
 
