@@ -42,7 +42,6 @@ void TLC5947::init()
 
 void TLC5947::update()
 {
-    uint32_t startTime = micros();
     for (int driverNr = nLedDrivers - 1; driverNr >= 0; driverNr--) {
         // create an array for the next chunk to send over SPI:
         uint8_t ledData[BYTESPERDRIVER];
@@ -66,7 +65,4 @@ void TLC5947::update()
     }
     digitalWrite(latchPin, LOW);
     digitalWrite(latchPin, HIGH);
-    uint32_t updateTime = micros() - startTime;
-
-    // Serial.println("update Took: "+String(updateTime)+"us");
 }
