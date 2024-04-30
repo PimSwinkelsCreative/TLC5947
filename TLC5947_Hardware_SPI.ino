@@ -10,45 +10,50 @@
 #define CLK_PIN 18
 
 // hardware setup:
-#define N_LEDS 48   //two driver boards are used currently
+#define N_LEDS 48  // two driver boards are used currently
 
 // led data:
 RGBWLed leds[N_LEDS];
 
-// create the TLC5947 object:
-// The led array needs to be initialized prior to this object creation
-TLC5947 ledDriver(leds, N_LEDS, DATA_PIN, CLK_PIN, LATCH_PIN);
+// driver pinout:
+TLC5947_PINOUT driverPinout = {CLK_PIN, DATA_PIN, LATCH_PIN, OE_PIN};
 
-//timing:
+// create the TLC5947 object:
+// The led array and pinout need to be initialized prior to this object creation
+
+TLC5947 ledDriver(leds, N_LEDS, driverPinout);
+
+// timing:
 uint16_t delayTime = 500;
 
-
-void setAllLedsTo(struct RGBWLed color)
-{
-    for (int i = 0; i < N_LEDS; i++) {
-        memcpy(&leds[i], &color, sizeof(leds[0]));
-    }
+void setAllLedsTo(struct RGBWLed color) {
+  for (int i = 0; i < N_LEDS; i++) {
+    setLedTo(i, color);
+  }
 }
 
-void setup()
-{
-    Serial.begin(115200);
-    pinMode(OE_PIN, OUTPUT);
-    digitalWrite(OE_PIN, LOW);
+void setLedTo(uint16_t ledIndex, struct RGBWLed color) {
+  if (ledIndex >= N_LEDS) return;
+  memcpy(&leds[ledIndex], &color, sizeof(leds[0]));
 }
 
-void loop()
-{
-    setAllLedsTo({ 4095, 0, 0, 0 });
-    ledDriver.update();
-    delay(delayTime);
-    setAllLedsTo({ 0, 4095, 0, 0 });
-    ledDriver.update();
-    delay(delayTime);
-    setAllLedsTo({ 0, 0, 4095, 0 });
-    ledDriver.update();
-    delay(delayTime);
-    setAllLedsTo({ 0, 0, 0, 4095 });
-    ledDriver.update();
-    delay(delayTime);
+void setup() {
+  Serial.begin(115200);
+  pinMode(OE_PIN, OUTPUT);
+  digitalWrite(OE_PIN, LOW);
+}
+
+void loop() {
+  setAllLedsTo({4095, 0, 0, 0});
+  ledDriver.update();
+  delay(delayTime);
+  setAllLedsTo({0, 4095, 0, 0});
+  ledDriver.update();
+  delay(delayTime);
+  setAllLedsTo({0, 0, 4095, 0});
+  ledDriver.update();
+  delay(delayTime);
+  setAllLedsTo({0, 0, 0, 4095});
+  ledDriver.update();
+  delay(delayTime);
 }
