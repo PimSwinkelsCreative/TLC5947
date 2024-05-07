@@ -39,11 +39,27 @@ class TLC5947 {
   void init();
 
  public:
+  // constructors:
   TLC5947(RGBLed* _rgbLedData, uint16_t _nRGBLeds, TLC5947_PINOUT& _pinout,
           uint32_t _clkFrequency = DEFAULT_SPI_CLK);
   TLC5947(RGBWLed* _rgbwLedData, uint16_t _nRGBWLeds, TLC5947_PINOUT& _pinout,
           uint32_t _clkFrequency = DEFAULT_SPI_CLK);
   TLC5947(uint16_t* _ledData, uint16_t _nLedDots, TLC5947_PINOUT& _pinout,
           uint32_t _clkFrequency = DEFAULT_SPI_CLK);
+
+  // setting led:
+  void setLedTo(uint16_t ledIndex, struct RGBWLed color);
+  void setLedTo(uint16_t ledIndex, struct RGBLed color);
+  void setLedTo(uint16_t ledIndex, uint16_t brightness);
+
+  // setting all leds:
+  void setAllLedsTo(struct RGBWLed color);
+  void setAllLedsTo(struct RGBLed color);
+  void setAllLedsTo(uint16_t brightness);
+
+  // clear all leds:
+  void clearLeds();
+
+  // write the ledData to the led drivers:
   void update();
 };
