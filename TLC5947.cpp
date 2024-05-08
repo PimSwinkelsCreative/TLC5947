@@ -2,31 +2,37 @@
 
 #include <SPI.h>
 
-TLC5947::TLC5947(uint16_t* _ledData, uint16_t _nLedDots,
-    TLC5947_PINOUT& _pinout, uint32_t _clkFrequency)
+TLC5947::TLC5947(uint16_t* _ledData, uint16_t _nLedDots, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
     : leds(_ledData)
     , nLedDots(_nLedDots)
-    , pinout(_pinout)
+    , clkPin(_clkPin)
+    , dataPin(_dataPin)
+    , latchPin(_latchPin)
+    , blankPin(_blankPin)
     , clkFrequency(_clkFrequency)
 {
     init();
 }
 
-TLC5947::TLC5947(RGBLed* _rgbLedData, uint16_t _nRGBLeds,
-    TLC5947_PINOUT& _pinout, uint32_t _clkFrequency)
+TLC5947::TLC5947(RGBLed* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
     : leds((uint16_t*)_rgbLedData)
     , nLedDots(_nRGBLeds * (sizeof(_rgbLedData[0]) / sizeof(_rgbLedData[0].r)))
-    , pinout(_pinout)
+    , clkPin(_clkPin)
+    , dataPin(_dataPin)
+    , latchPin(_latchPin)
+    , blankPin(_blankPin)
     , clkFrequency(_clkFrequency)
 {
     init();
 }
 
-TLC5947::TLC5947(RGBWLed* _rgbwLedData, uint16_t _nRGBWLeds,
-    TLC5947_PINOUT& _pinout, uint32_t _clkFrequency)
+TLC5947::TLC5947(RGBWLed* _rgbwLedData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
     : leds((uint16_t*)_rgbwLedData)
     , nLedDots(_nRGBWLeds * (sizeof(_rgbwLedData[0]) / sizeof(_rgbwLedData[0].r)))
-    , pinout(_pinout)
+    , clkPin(_clkPin)
+    , dataPin(_dataPin)
+    , latchPin(_latchPin)
+    , blankPin(_blankPin)
     , clkFrequency(_clkFrequency)
 {
     init();
@@ -38,13 +44,13 @@ void TLC5947::init()
     if (nLedDots % LEDDOTSPERDRIVER > 0) {
         nLedDrivers++;
     }
-    pinMode(pinout.latchPin, OUTPUT);
-    SPI.begin(pinout.clkPin, -1, pinout.dataPin, -1);
+    pinMode(latchPin, OUTPUT);
+    SPI.begin(clkPin, -1, dataPin, -1);
     SPI.setFrequency(clkFrequency);
-    digitalWrite(pinout.latchPin, HIGH);
-    if (pinout.blankPin > 0) {
-        pinMode(pinout.blankPin, OUTPUT);
-        digitalWrite(pinout.blankPin, LOW);
+    digitalWrite(latchPin, HIGH);
+    if (blankPin > 0) {
+        pinMode(blankPin, OUTPUT);
+        digitalWrite(blankPin, LOW);
     }
 }
 
@@ -73,12 +79,14 @@ void TLC5947::update()
         SPI.writeBytes(ledData, BYTESPERDRIVER);
     }
 
-    //outputs are briefly disabled when latching the values.
-    //This should solve the flickering problem
-    digitalWrite(pinout.blankPin, HIGH);
-    digitalWrite(pinout.latchPin, LOW);
-    digitalWrite(pinout.latchPin, HIGH);
-    digitalWrite(pinout.blankPin, LOW);
+    // outputs are briefly disabled when latching the values.
+    // This should solve the flickering problem
+    if (blankPin > 0)
+        digitalWrite(blankPin, HIGH);
+    digitalWrite(latchPin, HIGH);
+    digitalWrite(latchPin, LOW);
+    if (blankPin > 0)
+        digitalWrite(blankPin, LOW);
 }
 
 void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWLed color)

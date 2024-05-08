@@ -15,13 +15,9 @@
 // led data:
 RGBWLed leds[N_LEDS];
 
-// driver pinout:
-TLC5947_PINOUT driverPinout = {CLK_PIN, DATA_PIN, LATCH_PIN, OE_PIN};
-
 // create the TLC5947 object:
-// The led array and pinout need to be initialized prior to this object creation
-
-TLC5947 ledDriver(leds, N_LEDS, driverPinout);
+// The led array needs to be initialized prior to this object creation
+TLC5947 ledDriver(leds, N_LEDS,CLK_PIN, DATA_PIN,LATCH_PIN,OE_PIN);
 
 // timing:
 uint16_t delayTime = 500;
