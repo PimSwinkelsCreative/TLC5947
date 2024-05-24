@@ -4,56 +4,45 @@
 #include "TLC5947.h"
 
 // pinout:
-#define LATCH_PIN 22
-#define OE_PIN 21
-#define DATA_PIN 23
-#define CLK_PIN 18
+#define LATCH_PIN 15
+#define BLANK_PIN 2
+#define DATA_PIN 13
+#define CLK_PIN 14
 
 // hardware setup:
-#define N_LEDS 48  // two driver boards are used currently
+#define N_LEDS 24
 
 // led data:
 RGBWLed leds[N_LEDS];
 
-// driver pinout:
-TLC5947_PINOUT driverPinout = {CLK_PIN, DATA_PIN, LATCH_PIN, OE_PIN};
-
 // create the TLC5947 object:
-// The led array and pinout need to be initialized prior to this object creation
-
-TLC5947 ledDriver(leds, N_LEDS, driverPinout);
+// The led array needs to be initialized prior to this object creation
+TLC5947 ledDriver(leds, N_LEDS, CLK_PIN, DATA_PIN, LATCH_PIN, BLANK_PIN);
 
 // timing:
 uint16_t delayTime = 500;
 
-void setAllLedsTo(struct RGBWLed color) {
-  for (int i = 0; i < N_LEDS; i++) {
-    setLedTo(i, color);
-  }
+void setup()
+{
+    Serial.begin(115200);
 }
 
-void setLedTo(uint16_t ledIndex, struct RGBWLed color) {
-  if (ledIndex >= N_LEDS) return;
-  memcpy(&leds[ledIndex], &color, sizeof(leds[0]));
-}
+void loop()
+{
+    ledDriver.setAllLedsTo(RGBWLed({ 1000, 0, 0, 0 }));
+    ledDriver.update();
+    delay(delayTime);
+    ledDriver.setAllLedsTo(RGBWLed({ 0, 1000, 0, 0 }));
+    ledDriver.update();
+    delay(delayTime);
+    ledDriver.setAllLedsTo(RGBWLed({ 0, 0, 1000, 0 }));
+    ledDriver.update();
+    delay(delayTime);
+    ledDriver.setAllLedsTo(RGBWLed({ 0, 0, 0, 1000 }));
+    ledDriver.update();
+    delay(delayTime);
 
-void setup() {
-  Serial.begin(115200);
-  pinMode(OE_PIN, OUTPUT);
-  digitalWrite(OE_PIN, LOW);
-}
-
-void loop() {
-  setAllLedsTo({4095, 0, 0, 0});
-  ledDriver.update();
-  delay(delayTime);
-  setAllLedsTo({0, 4095, 0, 0});
-  ledDriver.update();
-  delay(delayTime);
-  setAllLedsTo({0, 0, 4095, 0});
-  ledDriver.update();
-  delay(delayTime);
-  setAllLedsTo({0, 0, 0, 4095});
-  ledDriver.update();
-  delay(delayTime);
+    // ledDriver.setAllLedsTo({10,10,10,10});
+    // ledDriver.update();
+    // delayMicroseconds(10);
 }
