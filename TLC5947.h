@@ -40,8 +40,8 @@ public:
     TLC5947(uint16_t* _ledData, uint16_t _nLedDots, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
 
     // setting led:
-    void setLedTo(uint16_t ledIndex, struct RGBWLed color);
-    void setLedTo(uint16_t ledIndex, struct RGBLed color);
+    void setLedTo(uint16_t ledIndex, struct RGBWColor color);
+    void setLedTo(uint16_t ledIndex, struct RGBColor color);
     void setLedTo(uint16_t ledIndex, uint16_t brightness);
 
     // setting all leds:

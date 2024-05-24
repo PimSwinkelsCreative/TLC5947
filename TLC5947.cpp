@@ -26,9 +26,9 @@ TLC5947::TLC5947(RGBColor* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uin
     init();
 }
 
-TLC5947::TLC5947(RGBWColor* _rgbwLedData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
-    : leds((uint16_t*)_rgbwLedData)
-    , nLedDots(_nRGBWLeds * (sizeof(_rgbwLedData[0]) / sizeof(_rgbwLedData[0].r)))
+TLC5947::TLC5947(RGBWColor* _rgbwData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
+    : leds((uint16_t*)_rgbwData)
+    , nLedDots(_nRGBWLeds * (sizeof(_rgbwData[0]) / sizeof(_rgbwData[0].r)))
     , clkPin(_clkPin)
     , dataPin(_dataPin)
     , latchPin(_latchPin)
