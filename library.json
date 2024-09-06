@@ -20,7 +20,7 @@
     "headers": "TLC5947.h",
     "dependencies":
     {
-        "16bitPixels": "https://github.com/PimSwinkelsCreative/16bitPixelTypes#V0.1.0"
+        "16bitPixels": "https://github.com/PimSwinkelsCreative/16bitPixelTypes#v0.1.1"
     },
     "examples":[
         {

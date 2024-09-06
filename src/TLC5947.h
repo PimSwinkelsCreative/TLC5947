@@ -1,6 +1,6 @@
 #pragma once
 #include <Arduino.h>
-#include "16bitPixelTypes.h"
+#include <16bitPixelTypes.h>
 
 #define BYTESPERDRIVER 36
 #define LEDDOTSPERDRIVER 24
