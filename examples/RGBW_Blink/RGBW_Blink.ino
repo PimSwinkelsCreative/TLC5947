@@ -13,7 +13,7 @@
 #define N_LEDS 24
 
 // led data:
-RGBWColor leds[N_LEDS];
+RGBWColor16 leds[N_LEDS];
 
 // create the TLC5947 object:
 // The led array needs to be initialized prior to this object creation
@@ -29,16 +29,16 @@ void setup()
 
 void loop()
 {
-    ledDriver.setAllLedsTo(RGBWColor({ 1000, 0, 0, 0 }));
+    ledDriver.setAllLedsTo(RGBWColor16({ 1000, 0, 0, 0 }));
     ledDriver.update();
     delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor({ 0, 1000, 0, 0 }));
+    ledDriver.setAllLedsTo(RGBWColor16({ 0, 1000, 0, 0 }));
     ledDriver.update();
     delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor({ 0, 0, 1000, 0 }));
+    ledDriver.setAllLedsTo(RGBWColor16({ 0, 0, 1000, 0 }));
     ledDriver.update();
     delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor({ 0, 0, 0, 1000 }));
+    ledDriver.setAllLedsTo(RGBWColor16({ 0, 0, 0, 1000 }));
     ledDriver.update();
     delay(delayTime);
 
