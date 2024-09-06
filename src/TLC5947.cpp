@@ -14,7 +14,7 @@ TLC5947::TLC5947(uint16_t* _ledData, uint16_t _nLedDots, uint8_t _clkPin, uint8_
     init();
 }
 
-TLC5947::TLC5947(RGBColor* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
+TLC5947::TLC5947(RGBColor16* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
     : leds((uint16_t*)_rgbLedData)
     , nLedDots(_nRGBLeds * (sizeof(_rgbLedData[0]) / sizeof(_rgbLedData[0].r)))
     , clkPin(_clkPin)
@@ -26,7 +26,7 @@ TLC5947::TLC5947(RGBColor* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uin
     init();
 }
 
-TLC5947::TLC5947(RGBWColor* _rgbwData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
+TLC5947::TLC5947(RGBWColor16* _rgbwData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin, uint32_t _clkFrequency)
     : leds((uint16_t*)_rgbwData)
     , nLedDots(_nRGBWLeds * (sizeof(_rgbwData[0]) / sizeof(_rgbwData[0].r)))
     , clkPin(_clkPin)
@@ -89,7 +89,7 @@ void TLC5947::update()
         digitalWrite(blankPin, LOW);
 }
 
-void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor color)
+void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor16 color)
 {
     ledIndex = ledIndex * sizeof(color) / sizeof(color.r);
     if (ledIndex >= nLedDots)
@@ -97,7 +97,7 @@ void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor color)
     memcpy(&leds[ledIndex], &color, sizeof(color));
 }
 
-void TLC5947::setLedTo(uint16_t ledIndex, struct RGBColor color)
+void TLC5947::setLedTo(uint16_t ledIndex, struct RGBColor16 color)
 {
     if (ledIndex >= nLedDots * sizeof(color) / sizeof(color.r))
         return;
@@ -111,7 +111,7 @@ void TLC5947::setLedTo(uint16_t ledIndex, uint16_t brightness)
     leds[ledIndex] = brightness;
 }
 
-void TLC5947::setAllLedsTo(struct RGBWColor color)
+void TLC5947::setAllLedsTo(struct RGBWColor16 color)
 {
     for (int i = 0; i < nLedDots; i++) {
         switch (i % 4) {
@@ -133,7 +133,7 @@ void TLC5947::setAllLedsTo(struct RGBWColor color)
         }
     }
 }
-void TLC5947::setAllLedsTo(struct RGBColor color)
+void TLC5947::setAllLedsTo(struct RGBColor16 color)
 {
     for (int i = 0; i < nLedDots; i++) {
         switch (i % 3) {
