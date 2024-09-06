@@ -7,20 +7,6 @@
 
 #define DEFAULT_SPI_CLK 10000000 // 10MHz
 
-// create an RGBWLed struct:
-struct RGBWColor16 {
-    uint16_t r;
-    uint16_t g;
-    uint16_t b;
-    uint16_t w;
-};
-
-// create a RGBLed struct:
-struct RGBColor16 {
-    uint16_t r;
-    uint16_t g;
-    uint16_t b;
-};
 
 class TLC5947 {
 private:
