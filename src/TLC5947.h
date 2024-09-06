@@ -1,12 +1,14 @@
 #pragma once
 #include <Arduino.h>
+#include "16bitPixelTypes.h"
+
 #define BYTESPERDRIVER 36
 #define LEDDOTSPERDRIVER 24
 
 #define DEFAULT_SPI_CLK 10000000 // 10MHz
 
 // create an RGBWLed struct:
-struct RGBWColor {
+struct RGBWColor16 {
     uint16_t r;
     uint16_t g;
     uint16_t b;
@@ -14,7 +16,7 @@ struct RGBWColor {
 };
 
 // create a RGBLed struct:
-struct RGBColor {
+struct RGBColor16 {
     uint16_t r;
     uint16_t g;
     uint16_t b;
@@ -35,18 +37,18 @@ private:
 
 public:
     // constructors:
-    TLC5947(RGBColor* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
-    TLC5947(RGBWColor* _rgbwLedData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
+    TLC5947(RGBColor16* _rgbLedData, uint16_t _nRGBLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
+    TLC5947(RGBWColor16* _rgbwLedData, uint16_t _nRGBWLeds, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
     TLC5947(uint16_t* _ledData, uint16_t _nLedDots, uint8_t _clkPin, uint8_t _dataPin, uint8_t _latchPin, int8_t _blankPin = -1, uint32_t _clkFrequency = DEFAULT_SPI_CLK);
 
     // setting led:
-    void setLedTo(uint16_t ledIndex, struct RGBWColor color);
-    void setLedTo(uint16_t ledIndex, struct RGBColor color);
+    void setLedTo(uint16_t ledIndex, struct RGBWColor16 color);
+    void setLedTo(uint16_t ledIndex, struct RGBColor16 color);
     void setLedTo(uint16_t ledIndex, uint16_t brightness);
 
     // setting all leds:
-    void setAllLedsTo(struct RGBWColor color);
-    void setAllLedsTo(struct RGBColor color);
+    void setAllLedsTo(struct RGBWColor16 color);
+    void setAllLedsTo(struct RGBColor16 color);
     void setAllLedsTo(uint16_t brightness);
 
     // clear all leds:
