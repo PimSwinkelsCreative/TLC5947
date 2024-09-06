@@ -1,7 +1,7 @@
 #include <Arduino.h>
 #include <SPI.h>
 
-#include "TLC5947.h"
+#include <TLC5947.h>
 
 // pinout:
 #define LATCH_PIN 15
