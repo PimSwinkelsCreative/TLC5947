@@ -20,6 +20,7 @@ private:
     uint8_t nLedDrivers;
 
     void init();
+    void printOutOfRangeError();
 
 public:
     // constructors:
