@@ -91,6 +91,8 @@ void TLC5947::update()
 
 void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor16 color)
 {
+    if (color.r > 4095 || color.g > 4095 || color.b > 4095 || color.w > 4095)
+        printOutOfRangeError();
     ledIndex = ledIndex * sizeof(color) / sizeof(color.r);
     if (ledIndex >= nLedDots)
         return;
@@ -99,6 +101,8 @@ void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor16 color)
 
 void TLC5947::setLedTo(uint16_t ledIndex, struct RGBColor16 color)
 {
+    if (color.r > 4095 || color.g > 4095 || color.b > 4095)
+        printOutOfRangeError();
     if (ledIndex >= nLedDots * sizeof(color) / sizeof(color.r))
         return;
     memcpy(&leds[ledIndex], &color, sizeof(color));
@@ -106,6 +110,8 @@ void TLC5947::setLedTo(uint16_t ledIndex, struct RGBColor16 color)
 
 void TLC5947::setLedTo(uint16_t ledIndex, uint16_t brightness)
 {
+    if (brightness > 4095)
+        printOutOfRangeError();
     if (ledIndex >= nLedDots)
         return; // catch out of bounds index
     leds[ledIndex] = brightness;
@@ -113,6 +119,8 @@ void TLC5947::setLedTo(uint16_t ledIndex, uint16_t brightness)
 
 void TLC5947::setAllLedsTo(struct RGBWColor16 color)
 {
+    if (color.r > 4095 || color.g > 4095 || color.b > 4095 || color.w > 4095)
+        printOutOfRangeError();
     for (int i = 0; i < nLedDots; i++) {
         switch (i % 4) {
         case 0:
@@ -135,6 +143,8 @@ void TLC5947::setAllLedsTo(struct RGBWColor16 color)
 }
 void TLC5947::setAllLedsTo(struct RGBColor16 color)
 {
+    if (color.r > 4095 || color.g > 4095 || color.b > 4095)
+        printOutOfRangeError();
     for (int i = 0; i < nLedDots; i++) {
         switch (i % 3) {
         case 0:
@@ -154,6 +164,9 @@ void TLC5947::setAllLedsTo(struct RGBColor16 color)
 }
 void TLC5947::setAllLedsTo(uint16_t brightness)
 {
+
+    if (brightness > 4095)
+        printOutOfRangeError();
     for (int i = 0; i < nLedDots; i++) {
         leds[i] = brightness;
     }
@@ -164,4 +177,9 @@ void TLC5947::clearLeds()
     for (int i = 0; i < nLedDots; i++) {
         leds[i] = 0;
     }
+}
+
+void TLC5947::printOutOfRangeError()
+{
+    Serial.println("TLC5947 warning: Input out of range! Library expects values below 4095");
 }
