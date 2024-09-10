@@ -1,6 +1,5 @@
 #include <Arduino.h>
 #include <SPI.h>
-
 #include <TLC5947.h>
 
 // pinout:
@@ -22,27 +21,23 @@ TLC5947 ledDriver(leds, N_LEDS, CLK_PIN, DATA_PIN, LATCH_PIN, BLANK_PIN);
 // timing:
 uint16_t delayTime = 500;
 
-void setup()
-{
-    Serial.begin(115200);
-}
+void setup() { Serial.begin(115200); }
 
-void loop()
-{
-    ledDriver.setAllLedsTo(RGBWColor16({ 1000, 0, 0, 0 }));
-    ledDriver.update();
-    delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor16({ 0, 1000, 0, 0 }));
-    ledDriver.update();
-    delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor16({ 0, 0, 1000, 0 }));
-    ledDriver.update();
-    delay(delayTime);
-    ledDriver.setAllLedsTo(RGBWColor16({ 0, 0, 0, 1000 }));
-    ledDriver.update();
-    delay(delayTime);
+void loop() {
+  ledDriver.setAllLedsTo(RGBWColor16(1000, 0, 0, 0));
+  ledDriver.update();
+  delay(delayTime);
+  ledDriver.setAllLedsTo(RGBWColor16(0, 1000, 0, 0));
+  ledDriver.update();
+  delay(delayTime);
+  ledDriver.setAllLedsTo(RGBWColor16(0, 0, 1000, 0));
+  ledDriver.update();
+  delay(delayTime);
+  ledDriver.setAllLedsTo(RGBWColor16(0, 0, 0, 1000));
+  ledDriver.update();
+  delay(delayTime);
 
-    // ledDriver.setAllLedsTo({10,10,10,10});
-    // ledDriver.update();
-    // delayMicroseconds(10);
+  // ledDriver.setAllLedsTo({10,10,10,10});
+  // ledDriver.update();
+  // delayMicroseconds(10);
 }
