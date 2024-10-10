@@ -20,7 +20,7 @@ class TLC5947 {
   bool disableWarnings;
 
   void init();
-  void printOutOfRangeError();
+  void printOutOfRangeError(uint16_t value = 0);
 
  public:
   // constructors:

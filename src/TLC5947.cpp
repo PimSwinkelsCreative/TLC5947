@@ -60,6 +60,15 @@ void TLC5947::init() {
 }
 
 void TLC5947::update() {
+  if (!disableWarnings) {
+    for (int i = 0; i < nLedDots; i++) {
+      uint16_t value = *(leds + i);
+      if (value > 4095) {
+        printOutOfRangeError(value);
+      }
+    }
+  }
+
   for (int driverNr = nLedDrivers - 1; driverNr >= 0; driverNr--) {
     // create an array for the next chunk to send over SPI:
     uint8_t ledData[BYTESPERDRIVER];
@@ -96,8 +105,6 @@ void TLC5947::update() {
 }
 
 void TLC5947::setLedTo(uint16_t ledIndex, struct RGBWColor16 color) {
-  if (color.r > 4095 || color.g > 4095 || color.b > 4095 || color.w > 4095)
-    printOutOfRangeError();
   ledIndex = ledIndex * sizeof(color) / sizeof(color.r);
   if (ledIndex >= nLedDots) return;
   memcpy(&leds[ledIndex], &color, sizeof(color));
@@ -117,8 +124,6 @@ void TLC5947::setLedTo(uint16_t ledIndex, uint16_t brightness) {
 }
 
 void TLC5947::setAllLedsTo(struct RGBWColor16 color) {
-  if (!disableWarnings && (color.r | color.g | color.b | color.w > 4095))
-    printOutOfRangeError();
   for (int i = 0; i < nLedDots; i++) {
     switch (i % 4) {
       case 0:
@@ -140,8 +145,6 @@ void TLC5947::setAllLedsTo(struct RGBWColor16 color) {
   }
 }
 void TLC5947::setAllLedsTo(struct RGBColor16 color) {
-  if (!disableWarnings && (color.r | color.g | color.b > 4095))
-    printOutOfRangeError();
   for (int i = 0; i < nLedDots; i++) {
     switch (i % 3) {
       case 0:
@@ -172,7 +175,11 @@ void TLC5947::clearLeds() {
   }
 }
 
-void TLC5947::printOutOfRangeError() {
-  Serial.println(
+void TLC5947::printOutOfRangeError(uint16_t value) {
+  Serial.print(
       "TLC5947 warning: Input out of range! Library expects values below 4095");
+  if (value > 0) {
+    Serial.print("\t value: " + String(value));
+  }
+  Serial.println();
 }
